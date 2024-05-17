@@ -105,6 +105,11 @@ func Calculate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if handle + 1 > weight {
+		http.Error(w, "Слишком большая рукоять", http.StatusBadRequest)
+		return
+	}
+
 	db, err := sql.Open("sqlite3", "./data")
 	if err!= nil {
 		panic(err)
