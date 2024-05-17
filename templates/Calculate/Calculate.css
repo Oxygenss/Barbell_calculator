@@ -1,0 +1,21 @@
+body {
+    background-color: #BC7FCD;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    position: relative; 
+  }
+
+.item {
+
+    background-color: #FFEBB2;
+    width: 500px;
+    text-align: center;
+    margin-top: 20px;
+    border-radius: 15px;
+}
+
+

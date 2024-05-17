@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"sort"
 	"strconv"
 
 	"github.com/gorilla/mux"
@@ -89,25 +90,81 @@ func Add(w http.ResponseWriter, r *http.Request) {
 }
 
 func Calculate(w http.ResponseWriter, r *http.Request) {
+	tmpl, _ := template.ParseFiles("templates/Calculate/Calculate.html")
 	weightStr := r.FormValue("weight")
 	handleStr := r.FormValue("handle")
 
-	weight, err := strconv.Atoi(weightStr)
+	weight, err := strconv.ParseFloat(weightStr, 64)
 	if err!= nil {
 		http.Error(w, "Неверный формат веса", http.StatusBadRequest)
 		return
 	}
 
-	handle, err := strconv.Atoi(handleStr)
+	handle, err := strconv.ParseFloat(handleStr, 64)
 	if err!= nil {
 		http.Error(w, "Неверный формат количества", http.StatusBadRequest)
 		return
 	}
 
-	fmt.Println(weight, handle)
-	
+	db, err := sql.Open("sqlite3", "./data")
+	if err!= nil {
+		panic(err)
+	}
+	defer db.Close()
+
 	
 
+	var plates = []Plate{}
+	
+	rows, err := db.Query("SELECT * FROM `Plates`")
+	if err != nil {
+		panic(err)
+	}
+
+	for rows.Next() {
+		var plate Plate 
+		err = rows.Scan(&plate.Id, &plate.Weight, &plate.Amount)
+		if err != nil {
+			panic(err)
+		}
+		plates = append(plates, plate)
+	}
+
+	sort.Slice(plates, func(i, j int) bool {
+		return plates[i].Weight > plates[j].Weight // Измените ">=" на "<" для сортировки по возрастанию
+	})
+
+	result := make(map[float64]int, len(plates))
+
+	for i := 0; i < len(plates); i++ {
+		result[plates[i].Weight] = 0
+
+	}
+
+	// for i, value := range result {
+	// 	fmt.Println(i, value)
+	// }
+
+	// for i := 0; i < len(plates); i++ {
+	// 	fmt.Println(plates[i].Weight, plates[i].Amount)
+	// }
+
+	value := (weight - handle - 1) / 2
+
+	//fmt.Println(value)
+
+	for i := 0; i < len(plates); i++ {
+		if plates[i].Weight < value && plates[i].Amount > 1 {
+			result[plates[i].Weight] += 2
+			value -= plates[i].Weight
+		}
+	}
+
+	// for i, value := range result {
+	// 	fmt.Println(i, value)
+	// }
+
+	tmpl.ExecuteTemplate(w, "result", result)
 }
 
 func Plates(w http.ResponseWriter, r *http.Request) {
