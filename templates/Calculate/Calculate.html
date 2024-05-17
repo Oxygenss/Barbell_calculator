@@ -10,7 +10,28 @@
     <title>Блины в наличии</title>
 </head>
 <body>
-    {{ . }}
+
+    {{ range $weight, $amount :=.result }}
+    
+    {{ if gt $amount 0 }}
+        <div class="item">
+            <h3> Вес: {{$weight}}кг </h3>
+            <h3> Количество: {{$amount}} </h3>
+        </div>
+    {{ end }}
+    {{ end }}
+    <h1> Общий вес: {{.sum}}кг </h1>
+    {{ if ne .value 0.0 }}
+        <h1> Не хватает: {{.value}}кг </h1>
+        {{ if eq .minWeight -1.0}}
+        <h1>Всe пары блинов использованы</h1>
+        {{ else }}
+        <h1> Если добавить минимальную пару ({{ .minWeight}}кг), то будет на {{.over}}кг больше </h1>
+        {{ end }}
+    {{ end }}
+    
+
+    
 </body>
 </html>
 

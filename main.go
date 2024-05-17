@@ -141,30 +141,51 @@ func Calculate(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	// for i, value := range result {
-	// 	fmt.Println(i, value)
-	// }
-
-	// for i := 0; i < len(plates); i++ {
-	// 	fmt.Println(plates[i].Weight, plates[i].Amount)
-	// }
+	var sum float64
 
 	value := (weight - handle - 1) / 2
 
-	//fmt.Println(value)
-
 	for i := 0; i < len(plates); i++ {
-		if plates[i].Weight < value && plates[i].Amount > 1 {
+		for plates[i].Weight <= value && plates[i].Amount > 1 {
 			result[plates[i].Weight] += 2
 			value -= plates[i].Weight
+			plates[i].Amount -= 2
+			sum += plates[i].Weight
+
 		}
 	}
 
-	// for i, value := range result {
-	// 	fmt.Println(i, value)
-	// }
+	var minWeight float64
+	flag := false
 
-	tmpl.ExecuteTemplate(w, "result", result)
+	for i := 0; i < len(plates); i++ {
+		if plates[i].Amount > 1 {
+			flag = true
+			minWeight = plates[i].Weight
+			break
+		}
+	}
+
+	for i := 0; i < len(plates); i++ {
+		if plates[i].Weight < minWeight &&  plates[i].Amount > 1 {
+			minWeight = plates[i].Weight
+		}
+	}
+
+	if !flag {
+		minWeight = -1
+	}
+
+
+	over := sum * 2 + minWeight * 2 + 1
+
+	tmpl.ExecuteTemplate(w, "result", map[string]interface{}{
+        "result": result,
+        "value": value * 2,
+		"minWeight": minWeight,
+		"sum": sum * 2 + 1,
+		"over": over - weight,
+    })
 }
 
 func Plates(w http.ResponseWriter, r *http.Request) {
