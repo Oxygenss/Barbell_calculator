@@ -1,0 +1,51 @@
+{{ define "index"}}
+<!doctype html>
+<html lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/templates/Home_page/free-icon-barbell-5843076.png">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="/templates/Home_page/Home_page.css">
+    
+    <title>Gym</title>
+  </head>
+  <body>
+
+    <div>
+
+    <div class="container">
+      <div class="add">
+        <form action="/Add" method="post">
+          <input type="text" name="weight" id="weight" placeholder="Вес блина" class="form-control form">
+          <input type="text" name="amount" id="amount" placeholder="Количество" class="form-control form">
+          <button class="btn button"> Добавить блины </button>
+          <a href="/Plates">
+            <button type="button" class="btn button">
+                Все блины                            
+            </button>
+        </a>
+        </form>
+      </div>
+
+      <div class="calculate">
+        <form action="/Calculate">
+          <h2>Введите нужный вам вес и вес рукояти</h2>
+          <input type="text" name="weight" id="weight" placeholder="Нужный вам вес" class="form-control form">
+          <input type="text" name="handle" id="handle" placeholder="Вес рукояти" class="form-control form">
+          <p>Вес закруток: 0.5кг</p>
+          <button class="btn  button"> Расчитать </button>
+        </form>
+      </div>
+    </div>
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+  </body>
+</html>
+
+{{ end }}

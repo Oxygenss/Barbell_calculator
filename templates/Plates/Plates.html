@@ -1,0 +1,24 @@
+{{ define "plates" }}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/templates/Plates/Plates.css">
+    <title>Блины в наличии</title>
+</head>
+<body>
+    {{ range . }}
+
+    <div class="item">
+
+        <h3> Вес: {{ .Weight }}кг </h3>
+        <h3> Количество: {{ .Amount }} </h3>
+    </div>
+
+    {{ end }}
+</body>
+</html>
+
+{{ end }}
