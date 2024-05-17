@@ -20,7 +20,6 @@ type Plate struct {
 
 
 func HomePage(w http.ResponseWriter, r *http.Request) {
-	//fmt.Println("The home page works")
 	tmpl, _ := template.ParseFiles("templates/Home_page/Home_page.html")
 	tmpl.ExecuteTemplate(w, "index", nil)
 }
@@ -131,7 +130,7 @@ func Calculate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	sort.Slice(plates, func(i, j int) bool {
-		return plates[i].Weight > plates[j].Weight // Измените ">=" на "<" для сортировки по возрастанию
+		return plates[i].Weight > plates[j].Weight
 	})
 
 	result := make(map[float64]int, len(plates))
@@ -220,10 +219,8 @@ func Plates(w http.ResponseWriter, r *http.Request) {
 func handleFunc() {
     r := mux.NewRouter()
 
-	// Обработчик для статических файлов
 	r.PathPrefix("/templates/").Handler(http.StripPrefix("/templates/", http.FileServer(http.Dir("./templates"))))
 
-	// Другие маршруты...
 	r.HandleFunc("/", HomePage)
 	r.HandleFunc("/Add", Add)
 	r.HandleFunc("/Calculate", Calculate)

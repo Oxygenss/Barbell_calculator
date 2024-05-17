@@ -21,8 +21,8 @@ body {
     top: 0;
     right: 0;
     z-index: 10;
-    margin-top: 50px; /* Small gap above */
-    margin-right: 100px; /* Small gap on the right */
+    margin-top: 50px;
+    margin-right: 100px;
   }
   
   .button {
