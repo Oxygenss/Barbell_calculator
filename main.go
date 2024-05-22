@@ -105,6 +105,11 @@ func Calculate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if handle < 0 || weight <= 0 {
+		http.Error(w, "Отрицательные значения", http.StatusBadRequest)
+		return
+	}
+
 	if handle + 1 > weight {
 		http.Error(w, "Слишком большая рукоять", http.StatusBadRequest)
 		return
@@ -183,12 +188,14 @@ func Calculate(w http.ResponseWriter, r *http.Request) {
 
 	over := sum * 2 + minWeight * 2 + 1
 
+	fmt.Println(over, weight)
+
 	tmpl.ExecuteTemplate(w, "result", map[string]interface{}{
         "result": result,
         "value": value * 2,
 		"minWeight": minWeight,
 		"sum": sum * 2 + 1,
-		"over": over - weight,
+		"over": over - (weight - handle),
     })
 }
 
